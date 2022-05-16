@@ -33,13 +33,24 @@ public class MainWindow implements Initializable {
 			}
 		}).start();
 		
-		
+		initEvent();
 	}
 
 	private void paint() {
 		screen.paint();
 	}
 	
+	private void initEvent() {
+		
+		canvas.setOnMouseClicked(e->{
+			screen.onClick(e);
+			});
+		
+		canvas.setOnKeyPressed(e->{
+			screen.onKey(e);
+		});
+		
+	}
 	
 
 	private void pause(int time) {

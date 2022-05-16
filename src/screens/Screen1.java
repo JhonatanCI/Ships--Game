@@ -2,7 +2,6 @@ package screens;
 
 import java.util.ArrayList;
 
-import controller.MainWindow;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,14 +16,14 @@ public class Screen1 extends BaseScreen{
 	
 	private Avatar avatar;
 	private ArrayList<Bullet> bullets;
-	private ArrayList<Enemie> boxes;
+	private ArrayList<Enemie> enemies;
 	
 	public Screen1(Canvas canvas) {
 		super(canvas);
 		avatar = new Avatar(canvas);
 		bullets = new ArrayList<Bullet> ();
-		boxes = new ArrayList<Enemie> ();
-		boxes.add(new Enemie(canvas,200,0));
+		enemies = new ArrayList<Enemie> ();
+		enemies.add(new Enemie(canvas,200,0));
 	}
 
 	@Override
@@ -39,15 +38,15 @@ public class Screen1 extends BaseScreen{
 				bullets.remove(b);
 		}
 		
-		for(Enemie b: boxes) {
+		for(Enemie b: enemies) {
 			b.paint();
 		}
 		
-		for(Enemie b: boxes) {
+		for(Enemie b: enemies) {
 			for(Bullet p: bullets) {
 				double dis = Math.sqrt(Math.pow(b.getX()-p.getX(), 2)+Math.pow(b.getY()-p.getY(), 2));
 				if(dis<=100) {
-					boxes.remove(b);
+					enemies.remove(b);
 					bullets.remove(p);
 					return;
 				}
@@ -79,12 +78,6 @@ public class Screen1 extends BaseScreen{
 		}
 		if(e.getCode().equals(KeyCode.SPACE)) {
 			bullets.add(new Bullet(canvas,avatar.getX(),avatar.getY()));
-			try {
-				Thread.sleep(80);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		}
 	}
 

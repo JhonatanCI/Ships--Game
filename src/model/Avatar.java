@@ -10,13 +10,11 @@ import javafx.scene.image.Image;
 public class Avatar {
 	
 	private GraphicsContext gc;
-	private Canvas c;
 	private int x=250;
 	private int y=250;
 	private Image image;
 	
 	public Avatar(Canvas c) {
-		this.c=c;
 		gc = c.getGraphicsContext2D();
 		
 		File file = new File("src/images/ship.png");
