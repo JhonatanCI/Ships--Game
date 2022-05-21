@@ -18,6 +18,7 @@ public class Avatar {
 	private ArrayList<Image> attackImages;
 	private int state = 0;
 	private int frame = 0;
+	private int score = 0;
 	
 	public Avatar(Canvas c) {
 		gc = c.getGraphicsContext2D();
@@ -95,5 +96,13 @@ public class Avatar {
 	public void moveY(int i) {
 		this.y+=i;
 		
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 }

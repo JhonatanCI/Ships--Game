@@ -16,13 +16,14 @@ public class Screen1 extends BaseScreen{
 	
 	private Avatar avatar;
 	private ArrayList<Bullet> bullets;
+	private final int ENEMIES = 30;
 	private Enemie[] enemies;
 	
 	public Screen1(Canvas canvas) {
 		super(canvas);
 		avatar = new Avatar(canvas);
 		bullets = new ArrayList<Bullet> ();
-		enemies = new Enemie[30];
+		enemies = new Enemie[ENEMIES];
 		createEnemies();
 		
 	}
@@ -66,7 +67,7 @@ public class Screen1 extends BaseScreen{
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		avatar.paint();
-		
+		//System.out.println(avatar.getScore());
 		for(Bullet b: bullets) {
 			b.paint();
 			if(b.getX()>canvas.getWidth())
@@ -79,14 +80,22 @@ public class Screen1 extends BaseScreen{
 		}
 		
 		for(Enemie b: enemies) {
-			if(b!=null)
-			for(Bullet p: bullets) {
-				double dis = Math.sqrt(Math.pow(b.getX()-p.getX(), 2)+Math.pow(b.getY()-p.getY(), 2));
-				if(dis<=100) {
-					b.setLife(false);
-					deleteEnemie(b);
-					bullets.remove(p);
-					return;
+			if(b!=null) {
+				double disAvatar = Math.sqrt(Math.pow(b.getX()-avatar.getX(), 2)+Math.pow(b.getY()-avatar.getY(), 2));
+				System.out.println(disAvatar);
+				if(disAvatar<=100) {
+					System.out.println("die");
+				}
+				for(Bullet p: bullets) {
+					
+					
+					double disBUllet = Math.sqrt(Math.pow(b.getX()-p.getX(), 2)+Math.pow(b.getY()-p.getY(), 2));
+					if(disBUllet<=100) {
+						b.setLife(false);
+						deleteEnemie(b);
+						bullets.remove(p);
+						return;
+					}
 				}
 			}
 		}
@@ -99,6 +108,7 @@ public class Screen1 extends BaseScreen{
 		for(int i = 0; i<enemies.length;i++) {
 			if(b==enemies[i]) {
 				enemies[i] =null;
+				avatar.setScore(avatar.getScore()+10);
 			}
 		}
 	}
@@ -111,18 +121,12 @@ public class Screen1 extends BaseScreen{
 	@Override
 	public void onKey(KeyEvent e) {
 		
-		if(e.getCode().equals(KeyCode.A)) {
-			avatar.moveX(-2);
+		if(e.getCode().equals(KeyCode.LEFT)) {
+			avatar.moveX(-6);
 		}
 		
-		if(e.getCode().equals(KeyCode.W)) {
-			avatar.moveY(-2);
-		}
-		if(e.getCode().equals(KeyCode.S)) {
-			avatar.moveY(2);
-		}
-		if(e.getCode().equals(KeyCode.D)) {
-			avatar.moveX(2);
+		if(e.getCode().equals(KeyCode.RIGHT)) {
+			avatar.moveX(6);
 		}
 		if(e.getCode().equals(KeyCode.SPACE)) {
 			bullets.add(new Bullet(canvas,avatar.getX(),avatar.getY()));
