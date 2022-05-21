@@ -15,6 +15,7 @@ public class Enemie {
 	private int x;
 	private int y;
 	private Image image;
+	private boolean life = true;
 	
 	public Enemie(Canvas canvas, int x, int y) {
 		this.gc = canvas.getGraphicsContext2D();
@@ -30,8 +31,21 @@ public class Enemie {
 		}
 	}
 	
+	public void run() {
+		while (life) {
+
+			y+=3;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void paint() {
-		gc.drawImage(image, x, y);
+		gc.drawImage(image, x, y,50,50);
 	}
 
 	public int getX() {
@@ -49,4 +63,14 @@ public class Enemie {
 	public void setY(int y) {
 		this.y = y;
 	}
+
+	public boolean isLife() {
+		return life;
+	}
+
+	public void setLife(boolean life) {
+		this.life = life;
+	}
+	
+	
 }

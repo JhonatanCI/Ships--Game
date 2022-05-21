@@ -16,14 +16,49 @@ public class Screen1 extends BaseScreen{
 	
 	private Avatar avatar;
 	private ArrayList<Bullet> bullets;
-	private ArrayList<Enemie> enemies;
+	private Enemie[] enemies;
 	
 	public Screen1(Canvas canvas) {
 		super(canvas);
 		avatar = new Avatar(canvas);
 		bullets = new ArrayList<Bullet> ();
-		enemies = new ArrayList<Enemie> ();
-		enemies.add(new Enemie(canvas,200,0));
+		enemies = new Enemie[30];
+		createEnemies();
+		
+	}
+
+	private void createEnemies() {
+		int x = 20;
+		int y = 0;
+		int count = 0;
+		int gir = 0;
+		for(int i = 0; i<enemies.length;i++) {
+			Enemie en = new Enemie(canvas,x,y);
+			enemies[i] = en;
+			new Thread(()->{
+				en.run();
+			}).start();
+			count++;
+			if(gir == 0) {
+				if(count<7) {
+					x+=80;
+				}else{
+					y+=60;
+					x=0;
+					count=0;
+					gir=1;
+				}
+			}else {
+				if(count<8) {
+					x+=80;
+				}else{
+					y+=60;
+					x=20;
+					count=0;
+					gir=0;
+				}
+			}
+		}
 	}
 
 	@Override
@@ -39,20 +74,33 @@ public class Screen1 extends BaseScreen{
 		}
 		
 		for(Enemie b: enemies) {
+			if(b!=null)
 			b.paint();
 		}
 		
 		for(Enemie b: enemies) {
+			if(b!=null)
 			for(Bullet p: bullets) {
 				double dis = Math.sqrt(Math.pow(b.getX()-p.getX(), 2)+Math.pow(b.getY()-p.getY(), 2));
 				if(dis<=100) {
-					enemies.remove(b);
+					b.setLife(false);
+					deleteEnemie(b);
 					bullets.remove(p);
 					return;
 				}
 			}
 		}
 		
+	}
+	
+	
+
+	private void deleteEnemie(Enemie b) {
+		for(int i = 0; i<enemies.length;i++) {
+			if(b==enemies[i]) {
+				enemies[i] =null;
+			}
+		}
 	}
 
 	@Override
@@ -78,6 +126,7 @@ public class Screen1 extends BaseScreen{
 		}
 		if(e.getCode().equals(KeyCode.SPACE)) {
 			bullets.add(new Bullet(canvas,avatar.getX(),avatar.getY()));
+			avatar.setState(1);
 		}
 	}
 
