@@ -21,10 +21,12 @@ public class Enemie {
 		this.gc = canvas.getGraphicsContext2D();
 		this.x = x;
 		this.y=y;
-		File file = new File("src/images/ship.png");
-		//System.out.println(file.exists());
 		try {
-			image= new Image(new FileInputStream(file));
+			int i = (int)Math.floor(Math.random()*(6)+1);
+				File file = new File("src/images/PNG_Parts&Spriter_Animation/Ship"+i+"/Ship"+i+".png");
+				
+				 image= new Image(new FileInputStream(file));
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,7 +47,7 @@ public class Enemie {
 	}
 	
 	public void paint() {
-		gc.drawImage(image, x, y,50,50);
+		gc.drawImage(image, x, y,40,65);
 	}
 
 	public int getX() {

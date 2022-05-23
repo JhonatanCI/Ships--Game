@@ -16,7 +16,7 @@ public class Screen1 extends BaseScreen{
 	
 	private Avatar avatar;
 	private ArrayList<Bullet> bullets;
-	private final int ENEMIES = 30;
+	private final int ENEMIES = 7;
 	private Enemie[] enemies;
 	
 	public Screen1(Canvas canvas) {
@@ -82,7 +82,7 @@ public class Screen1 extends BaseScreen{
 		for(Enemie b: enemies) {
 			if(b!=null) {
 				double disAvatar = Math.sqrt(Math.pow(b.getX()-avatar.getX(), 2)+Math.pow(b.getY()-avatar.getY(), 2));
-				System.out.println(disAvatar);
+				//System.out.println(disAvatar);
 				if(disAvatar<=100) {
 					System.out.println("die");
 				}
@@ -90,7 +90,7 @@ public class Screen1 extends BaseScreen{
 					
 					
 					double disBUllet = Math.sqrt(Math.pow(b.getX()-p.getX(), 2)+Math.pow(b.getY()-p.getY(), 2));
-					if(disBUllet<=100) {
+					if(disBUllet<=65) {
 						b.setLife(false);
 						deleteEnemie(b);
 						bullets.remove(p);
