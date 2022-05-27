@@ -47,7 +47,7 @@ public class Enemie {
 	}
 	
 	public void paint() {
-		gc.drawImage(image, x, y,40,65);
+		gc.drawImage(image, x, y,30,65);
 	}
 
 	public int getX() {
