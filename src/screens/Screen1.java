@@ -16,8 +16,9 @@ public class Screen1 extends BaseScreen{
 
 	
 	private Avatar avatar;
+	private boolean playing = true;
 	private ArrayList<Bullet> bullets;
-	private final int ENEMIES = 20;
+	private final int ENEMIES = 10;
 	private Enemie[] enemies;
 	private Score score = new Score(canvas,500,20);
 	
@@ -85,6 +86,7 @@ public class Screen1 extends BaseScreen{
 				double disAvatar = Math.sqrt(Math.pow(b.getX()-avatar.getX(), 2)+Math.pow(b.getY()-avatar.getY(), 2));
 				//System.out.println(disAvatar);
 				if(disAvatar<=100) {
+					playing = false;
 					System.out.println("die");
 				}
 				for(Bullet p: bullets) {
@@ -113,6 +115,9 @@ public class Screen1 extends BaseScreen{
 			if(b==enemies[i]) {
 				enemies[i] =null;
 				avatar.setScore(avatar.getScore()+10);
+				if(avatar.getScore()==(ENEMIES*10)) {
+					playing=false;
+				}
 			}
 		}
 	}
@@ -136,6 +141,14 @@ public class Screen1 extends BaseScreen{
 			bullets.add(new Bullet(canvas,avatar.getX(),avatar.getY()));
 			avatar.setState(1);
 		}
+	}
+
+	public boolean isPlaying() {
+		return playing;
+	}
+
+	public void setPlaying(boolean playing) {
+		this.playing = playing;
 	}
 
 }

@@ -26,7 +26,7 @@ public class MainWindow implements Initializable {
 		canvas.setFocusTraversable(true);
 		//gc = canvas.getGraphicsContext2D();
 		new Thread(() -> {
-			while (true) {
+			while (screen.isPlaying()) {
 				paint();
 				pause(50);
 				FRAMES++;
