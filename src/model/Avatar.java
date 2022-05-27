@@ -13,11 +13,12 @@ public class Avatar {
 	
 	private GraphicsContext gc;
 	private int x=250;
-	private int y=250;
+	private int y=310;
 	private ArrayList<Image> runImages;
 	private ArrayList<Image> attackImages;
-	private int state = 0;
-	private int frame = 0;
+	//private int state = 0;
+	//private int frame = 0;
+	private Image image;
 	private int score = 0;
 	
 	public Avatar(Canvas c) {
@@ -25,18 +26,10 @@ public class Avatar {
 		runImages = new ArrayList<>();
 		attackImages = new ArrayList<>();
 		try {
-			for(int i=1;i<11;i++) {
-				File file = new File("src/images/png/Run ("+i+").png");
+				File file = new File("src/images/ship.png");
 				
-				Image image= new Image(new FileInputStream(file));
-				runImages.add(image);	
-			}
-			for(int i=1;i<11;i++){
-				File file = new File("src/images/png/Attack ("+i+").png");
-				
-				Image image= new Image(new FileInputStream(file));
-				attackImages.add(image);	
-			}
+				 image= new Image(new FileInputStream(file));
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,7 +55,7 @@ public class Avatar {
 	}
 
 	public void paint() {
-		if(state==0) {
+		/*if(state==0) {
 			gc.drawImage(runImages.get(frame%10), x, y,100,100);
 			frame++;
 		}else {
@@ -73,8 +66,8 @@ public class Avatar {
 			if(frame==10) 
 				this.state=0;
 		}
-		
-		
+		*/
+		gc.drawImage(image, x, y,50,70);
 		
 		/*if(MainWindow.FRAMES == 20) {
 			x=10;
@@ -82,10 +75,10 @@ public class Avatar {
 		}*/
 	}
 	
-	public void setState(int state) {
+	/*public void setState(int state) {
 		this.state=state;
 		this.frame=0;
-	}
+	}*/
 	
 
 	public void moveX(int i) {

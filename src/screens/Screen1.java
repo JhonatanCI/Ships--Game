@@ -28,7 +28,6 @@ public class Screen1 extends BaseScreen{
 		bullets = new ArrayList<Bullet> ();
 		enemies = new Enemie[ENEMIES];
 		createEnemies();
-		
 	}
 
 	private void createEnemies() {
@@ -83,18 +82,18 @@ public class Screen1 extends BaseScreen{
 		
 		for(Enemie b: enemies) {
 			if(b!=null) {
-				double disAvatar = Math.sqrt(Math.pow(b.getX()-avatar.getX(), 2)+Math.pow(b.getY()-avatar.getY(), 2));
+				double disAvatar = Math.sqrt(Math.pow(b.getX()-(avatar.getX()-5), 2)+Math.pow(b.getY()-(avatar.getY()-30), 2));
 				//System.out.println(disAvatar);
-				if(disAvatar<=100) {
+				if(disAvatar<=70) {
 					playing = false;
 					System.out.println("die");
 				}
 				for(Bullet p: bullets) {
 					
-					double enemieX=b.getX()+15;
-					double enemieY=b.getY()+32;
+					double enemieX=b.getX()-15;
+					double enemieY=b.getY()+25;
 					double disBUllet = Math.sqrt(Math.pow(enemieX-p.getX(), 2)+Math.pow(enemieY-p.getY(), 2));
-					if(disBUllet<=30) {
+					if(disBUllet<=20) {
 						b.setLife(false);
 						deleteEnemie(b);
 						bullets.remove(p);
@@ -138,8 +137,8 @@ public class Screen1 extends BaseScreen{
 			avatar.moveX(6);
 		}
 		if(e.getCode().equals(KeyCode.SPACE)) {
-			bullets.add(new Bullet(canvas,avatar.getX(),avatar.getY()));
-			avatar.setState(1);
+			bullets.add(new Bullet(canvas,avatar.getX()-5,avatar.getY()-40));
+			//avatar.setState(1);
 		}
 	}
 
