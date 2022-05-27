@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import model.Avatar;
 import model.Enemie;
+import model.Explosion;
 import model.Score;
 import model.Bullet;
 
@@ -18,6 +19,7 @@ public class Screen1 extends BaseScreen{
 	private Avatar avatar;
 	private boolean playing = true;
 	private ArrayList<Bullet> bullets;
+	private ArrayList<Explosion> explosions;
 	private final int ENEMIES = 10;
 	private Enemie[] enemies;
 	private Score score = new Score(canvas,500,20);
@@ -26,6 +28,7 @@ public class Screen1 extends BaseScreen{
 		super(canvas);
 		avatar = new Avatar(canvas);
 		bullets = new ArrayList<Bullet> ();
+		explosions = new ArrayList<Explosion>();
 		enemies = new Enemie[ENEMIES];
 		createEnemies();
 	}
@@ -79,7 +82,14 @@ public class Screen1 extends BaseScreen{
 			if(b!=null)
 			b.paint();
 		}
-		
+		for(Explosion e:explosions) {
+			if(!e.isDie())
+				e.paint();
+			else {
+				explosions.remove(e);
+				return;
+			}
+		}
 		for(Enemie b: enemies) {
 			if(b!=null) {
 				double disAvatar = Math.sqrt(Math.pow(b.getX()-(avatar.getX()-5), 2)+Math.pow(b.getY()-(avatar.getY()-30), 2));
@@ -94,6 +104,7 @@ public class Screen1 extends BaseScreen{
 					double enemieY=b.getY()+25;
 					double disBUllet = Math.sqrt(Math.pow(enemieX-p.getX(), 2)+Math.pow(enemieY-p.getY(), 2));
 					if(disBUllet<=20) {
+						explosions.add(new Explosion(canvas,b.getX(),b.getY()));
 						b.setLife(false);
 						deleteEnemie(b);
 						bullets.remove(p);
