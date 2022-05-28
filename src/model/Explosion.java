@@ -8,7 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 public class Explosion {
-	
 
 		private Canvas canvas;
 		private GraphicsContext gc;
@@ -16,7 +15,6 @@ public class Explosion {
 		
 		private int x,y;
 		private int size;
-		private int speed;
 		private int frame = 0;
 		private boolean die=false;
 		
@@ -26,7 +24,6 @@ public class Explosion {
 			this.x = x;
 			this.y = y;
 			this.size = 60;
-			this.speed = 3;
 			for(int i = 0 ;i<11;i++) {
 				File file = new File("src/images/PNG_Parts&Spriter_Animation/Explosions/Explosion1/Explosion1_"+(i+1)+".png");
 				Image image;

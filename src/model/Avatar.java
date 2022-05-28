@@ -14,17 +14,14 @@ public class Avatar {
 	private GraphicsContext gc;
 	private int x=250;
 	private int y=310;
-	private ArrayList<Image> runImages;
-	private ArrayList<Image> attackImages;
 	//private int state = 0;
 	//private int frame = 0;
 	private Image image;
 	private int score = 0;
+	private boolean die=false;
 	
 	public Avatar(Canvas c) {
 		gc = c.getGraphicsContext2D();
-		runImages = new ArrayList<>();
-		attackImages = new ArrayList<>();
 		try {
 				File file = new File("src/images/ship.png");
 				
@@ -98,4 +95,14 @@ public class Avatar {
 	public void setScore(int score) {
 		this.score = score;
 	}
+
+	public boolean isDie() {
+		return die;
+	}
+
+	public void setDie(boolean die) {
+		this.die = die;
+	}
+	
+	
 }

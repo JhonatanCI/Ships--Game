@@ -9,28 +9,37 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import model.Avatar;
 import model.Enemie;
+import model.EnemieBullet;
 import model.Explosion;
 import model.Score;
 import model.Bullet;
 
-public class Screen1 extends BaseScreen{
+public class GameScreen extends BaseScreen{
 
 	
 	private Avatar avatar;
 	private boolean playing = true;
 	private ArrayList<Bullet> bullets;
+	private ArrayList<EnemieBullet> enemieBull;
 	private ArrayList<Explosion> explosions;
-	private final int ENEMIES = 10;
+	private final int ENEMIES = 15;
 	private Enemie[] enemies;
 	private Score score = new Score(canvas,500,20);
+	private boolean lastEnemie = false;
 	
-	public Screen1(Canvas canvas) {
+	public GameScreen(Canvas canvas) {
 		super(canvas);
-		avatar = new Avatar(canvas);
-		bullets = new ArrayList<Bullet> ();
-		explosions = new ArrayList<Explosion>();
-		enemies = new Enemie[ENEMIES];
-		createEnemies();
+		if(ENEMIES<=25) {
+			avatar = new Avatar(canvas);
+			bullets = new ArrayList<Bullet> ();
+			explosions = new ArrayList<Explosion>();
+			enemieBull = new ArrayList<EnemieBullet>();
+			enemies = new Enemie[ENEMIES];
+			createEnemies();
+		}else {
+			System.out.println("SON DEMASIADOS NOS HAN INVADIDO");
+			playing =  false;
+		}
 	}
 
 	private void createEnemies() {
@@ -71,22 +80,45 @@ public class Screen1 extends BaseScreen{
 	public void paint() {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		if(!avatar.isDie())
 		avatar.paint();
 		for(Bullet b: bullets) {
 				b.paint();
 				if(b.getX()>canvas.getWidth())
 					bullets.remove(b);
 		}
+		for(EnemieBullet b: enemieBull) {
+			b.paint();
+			//System.out.println(b.getX());
+			if(b.getY()>400) {
+				enemieBull.remove(b);
+				break;
+			}
+		}
 		
 		for(Enemie b: enemies) {
-			if(b!=null)
-			b.paint();
+			if(b!=null) {
+				b.paint();
+				int shot = 1 + (int)(Math.random() * (800));
+				if(b.getY()>=300) {
+					explosions.add(new Explosion(canvas,avatar.getX(),avatar.getY()));
+					avatar.setDie(true);
+					
+				}
+				if(shot==100) {
+					enemieBull.add(new EnemieBullet(canvas,b.getX()-25,b.getY()+55));
+				}
+			}
 		}
 		for(Explosion e:explosions) {
 			if(!e.isDie())
 				e.paint();
 			else {
 				explosions.remove(e);
+				if(avatar.isDie())
+					playing = false;
+				if(lastEnemie)
+					playing = false;
 				return;
 			}
 		}
@@ -94,10 +126,6 @@ public class Screen1 extends BaseScreen{
 			if(b!=null) {
 				double disAvatar = Math.sqrt(Math.pow(b.getX()-(avatar.getX()-5), 2)+Math.pow(b.getY()-(avatar.getY()-30), 2));
 				//System.out.println(disAvatar);
-				if(disAvatar<=70) {
-					playing = false;
-					System.out.println("die");
-				}
 				for(Bullet p: bullets) {
 					
 					double enemieX=b.getX()-15;
@@ -111,7 +139,31 @@ public class Screen1 extends BaseScreen{
 						return;
 					}
 				}
+				if(disAvatar<=70) {
+					explosions.add(new Explosion(canvas,avatar.getX(),avatar.getY()));
+					avatar.setDie(true);
+				}
 			}
+		}
+		
+		for(EnemieBullet b: enemieBull) {
+			boolean breakk = false;
+			double disAvatar = Math.sqrt(Math.pow(b.getX()-(avatar.getX()-20), 2)+Math.pow(b.getY()-(avatar.getY()-10), 2));
+			if(disAvatar<=30) {
+				explosions.add(new Explosion(canvas,avatar.getX(),avatar.getY()));
+				avatar.setDie(true);
+			}
+			for(Bullet r: bullets) {
+				double disBullets = Math.sqrt(Math.pow(b.getX()-(r.getX()), 2)+Math.pow(b.getY()-(r.getY()), 2));
+				if(disBullets<20) {
+					enemieBull.remove(b);
+					bullets.remove(r);
+					breakk=true;
+					break;
+				}
+			}
+			if(breakk)
+				break;
 		}
 		
 		score.paint(avatar.getScore());
@@ -126,7 +178,8 @@ public class Screen1 extends BaseScreen{
 				enemies[i] =null;
 				avatar.setScore(avatar.getScore()+10);
 				if(avatar.getScore()==(ENEMIES*10)) {
-					playing=false;
+					explosions.add(new Explosion(canvas,b.getX(),b.getY()));
+					lastEnemie = true;
 				}
 			}
 		}
@@ -159,6 +212,10 @@ public class Screen1 extends BaseScreen{
 
 	public void setPlaying(boolean playing) {
 		this.playing = playing;
+	}
+	
+	public int getScore() {
+		return avatar.getScore();
 	}
 
 }

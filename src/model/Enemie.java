@@ -36,9 +36,9 @@ public class Enemie {
 	public void run() {
 		while (life) {
 
-			y+=3;
+			y+=10;
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

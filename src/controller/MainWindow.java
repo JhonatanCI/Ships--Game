@@ -6,8 +6,10 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import screens.Screen1;
+import screens.GameOverScreen;
+import screens.GameScreen;
 //import javafx.scene.canvas.GraphicsContext;
+import screens.ScoreScreen;
 
 
 public class MainWindow implements Initializable {
@@ -18,36 +20,43 @@ public class MainWindow implements Initializable {
 	//private GraphicsContext gc;
 	
 	public static long FRAMES=0;
-	private Screen1 screen;
+	private GameScreen gameScreen;
+	private GameOverScreen gameOver;
+	private ScoreScreen scoreScreen;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		screen = new Screen1(canvas);
+		gameScreen = new GameScreen(canvas);
+		gameOver = new GameOverScreen(canvas);
 		canvas.setFocusTraversable(true);
 		//gc = canvas.getGraphicsContext2D();
 		new Thread(() -> {
-			while (screen.isPlaying()) {
+			while (gameScreen.isPlaying()) {
 				paint();
 				pause(50);
-				FRAMES++;
+				FRAMES++; 
 			}
+			gameOver.paint();
+			pause(1000);
+			scoreScreen = new ScoreScreen(canvas, gameScreen.getScore());
+			scoreScreen.paint();
 		}).start();
 		
 		initEvent();
 	}
 
 	private void paint() {
-		screen.paint();
+		gameScreen.paint();
 	}
 	
 	private void initEvent() {
 		
 		canvas.setOnMouseClicked(e->{
-			screen.onClick(e);
+			gameScreen.onClick(e);
 			});
 		
 		canvas.setOnKeyPressed(e->{
-			screen.onKey(e);
+			gameScreen.onKey(e);
 		});
 		
 	}
