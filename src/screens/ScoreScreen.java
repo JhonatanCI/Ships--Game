@@ -25,7 +25,6 @@ public class ScoreScreen extends BaseScreen{
 	public ScoreScreen(Canvas canvas, int score) {
 		super(canvas);
 		scores = new ArrayList<Integer>();
-		Collections.sort(scores);
 		scores.add(score);
 	}
 
@@ -34,6 +33,7 @@ public class ScoreScreen extends BaseScreen{
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		loadJSON();
+		Collections.sort(scores,Collections.reverseOrder());
 		new Letters(canvas,110,jump,"RANK").paint();
 		new Letters(canvas,430,jump,"SCORE").paint();
 		int l = 1;
